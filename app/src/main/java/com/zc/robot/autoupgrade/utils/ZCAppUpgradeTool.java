@@ -16,6 +16,9 @@ import com.zc.robot.autoupgrade.BuildConfig;
 
 import java.io.*;
 
+/**
+ * 自动更新APP工具类，复制此类到其他项目，方便调用
+ */
 public class ZCAppUpgradeTool {
     public static final String ZC_PACKAGE_NAME = "com.zc.robot.autoupgrade";
     public static final String ZC_MAIN_ACTIVITY = "com.zc.robot.autoupgrade.MainActivity";
@@ -30,6 +33,12 @@ public class ZCAppUpgradeTool {
     public static final String EXTRA_SAVE_FILE_NAME = "save_file_name";
     public static final String EXTRA_SAVE_FILE_PATH = "save_file_path";
 
+    /**
+     * 传入url，启动更新app，自动开始下载安装
+     *
+     * @param context     上下文
+     * @param downloadUrl 下载url
+     */
     public static void startUpdate(Context context, String downloadUrl) {
         try {
             ComponentName componentName = new ComponentName(ZC_PACKAGE_NAME, ZC_MAIN_ACTIVITY);
@@ -50,6 +59,7 @@ public class ZCAppUpgradeTool {
      * 安装自动更新app
      *
      * @param activity
+     * @param rawId  raw资源ID
      */
     public static void installZCAU(final Activity activity, final int rawId) {
         if (!hasPackgeInstalled(activity, ZC_PACKAGE_NAME)) {
@@ -104,10 +114,15 @@ public class ZCAppUpgradeTool {
 
     }
 
+    /**
+     * 非root环境下安装app
+     * @param context
+     * @param apk
+     */
     private static void normalInstallApk(Context context, File apk) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        //判断是否是AndroidN以及更高的版本
+        //如果sdk版本是android N以上，需要配置fileProvider
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             Uri contentUri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".fileProvider", apk);
