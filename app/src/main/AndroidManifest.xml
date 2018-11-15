@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.zc.robot.autoupgrade">
+
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.BROADCAST_PACKAGE_REPLACED"/>
+    <application
+            android:allowBackup="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/app_name"
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:supportsRtl="true"
+            android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity"
+                  android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <data android:host="main" android:scheme="com.zc.robot.autoupgrade"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".utils.PermissionUtils$PermissionActivity"
+                  android:launchMode="singleTop"/>
+
+        <receiver
+                android:name=".AutoUpgradeReceiver"
+                android:enabled="true"
+                android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_REPLACED"/>
+                <action android:name="com.zc.robot.autoupgrade.ACTION_LAUNCH_APP"/>
+                <action android:name="com.zc.robot.autoupgrade.ACTION_SEND_PACKAGE_NAME"/>
+                <data android:scheme="package"/>
+            </intent-filter>
+        </receiver>
+
+        <service
+                android:process=":download"
+                android:name=".DownloadService"/>
+
+        <provider
+                android:name="android.support.v4.content.FileProvider"
+                android:authorities="com.zc.robot.autoupgrade.fileProvider"
+                android:exported="false"
+                android:grantUriPermissions="true">
+            <meta-data
+                    android:name="android.support.FILE_PROVIDER_PATHS"
+                    android:resource="@xml/file_path"/>
+        </provider>
+    </application>
+
+</manifest>
