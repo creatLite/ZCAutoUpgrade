@@ -3,7 +3,7 @@
 ## 包含了一个工具类ZCAppUpgradeTool，方便在其他APP调起
 
 
-(```)
+```java
      /**
      * 传入url，启动更新app，自动开始下载安装
      *
@@ -25,4 +25,4 @@
             Toast.makeText(context, "启动更新APP失败,请重试", Toast.LENGTH_LONG).show();
         }
     }
-(```)
+```
