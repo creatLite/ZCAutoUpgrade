@@ -29,14 +29,17 @@ class MainActivity : AppCompatActivity() {
                     infoTextView?.text = "正在下载,请稍候..."
                 }
                 ZCAppUpgradeTool.ACTION_DOWNLOAD_FAIL -> {
+                    handler?.removeCallbacksAndMessages(null)
                     infoTextView?.text = "下载失败"
                     DelayCloseAct()
                 }
                 ZCAppUpgradeTool.ACTION_INSTALLING_PACKAGE -> {
+                    handler?.removeCallbacksAndMessages(null)
                     infoTextView?.text = "正在安装"
                     DelayCloseAct()
                 }
                 ZCAppUpgradeTool.ACTION_INSTALL_FINISHED -> {
+                    handler?.removeCallbacksAndMessages(null)
                     infoTextView?.text = "安装完成,正在启动应用"
                     DelayCloseAct()
                 }
@@ -49,7 +52,7 @@ class MainActivity : AppCompatActivity() {
             override fun run() {
                 finish()
             }
-        }, 3000)
+        }, 5000)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
